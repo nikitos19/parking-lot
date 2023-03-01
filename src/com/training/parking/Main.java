@@ -6,7 +6,9 @@ import com.training.parking.vehicle.Truck;
 
 public class Main {
     public static void main(String[] args) {
-        ParkingLot parking = new ParkingLot(1, 2, 1);
+//        ParkingLot_PriorityQueue parking = new ParkingLot_PriorityQueue(1, 2, 1);
+//        ParkingLot_VehicleTypeToSpots parking = new ParkingLot_VehicleTypeToSpots(1, 2, 1);
+        ParkingLot_SpotTypeToSpots parking = new ParkingLot_SpotTypeToSpots(1, 2, 1);
         System.out.println(parking);
 
         System.out.println(parking.park(new Car())); // true
@@ -16,7 +18,7 @@ public class Main {
         Car car2 = new Car();
         System.out.println(parking.park(car2)); // true
         System.out.println(parking.park(new Car())); // false
-        parking.unpark(car2);
+        System.out.println(parking.unpark(car2)); // true
         System.out.println(parking.park(new Motorcycle())); // true
         System.out.println(parking);
     }

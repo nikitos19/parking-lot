@@ -2,32 +2,41 @@ package com.training.parking.spot;
 
 import com.training.parking.vehicle.Vehicle;
 
-public class Spot {
-    private SpotType spotType;
+import java.time.Duration;
+import java.time.LocalDateTime;
+
+public abstract class Spot {
+    private LocalDateTime parkedTime;
     private Vehicle vehicle;
-
-    public Spot(SpotType spotType) {
-        this.spotType = spotType;
-    }
-
-    public boolean canFitVehicle(Vehicle vehicle) {
-        return spotType.canFitVehicle(vehicle.getVehicleType());
-    }
 
     public void occupy(Vehicle vehicle) {
         this.vehicle = vehicle;
+        this.parkedTime = LocalDateTime.now();
     }
 
     public void freeUp() {
         this.vehicle = null;
+        this.parkedTime = null;
     }
 
-    public SpotType getSpotType() {
-        return this.spotType;
+    public double charge() {
+        if (vehicle == null || parkedTime == null) {
+            return 0.0;
+        }
+
+        double hours = Duration.between(parkedTime, LocalDateTime.now()).toMinutes() / 60.0;
+        return hours * getHourlyRate();
     }
 
+    public abstract boolean canFitVehicle(Vehicle vehicle);
+
+    public abstract SpotType getSpotType();
+
+    protected abstract double getHourlyRate();
+
+    // other methods
     @Override
     public String toString() {
-        return spotType + " Spot";
+        return getSpotType().name().toLowerCase() + " spot";
     }
 }
