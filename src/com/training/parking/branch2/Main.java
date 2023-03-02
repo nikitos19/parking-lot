@@ -1,8 +1,8 @@
-package com.training.parking;
+package com.training.parking.branch2;
 
-import com.training.parking.vehicle.Car;
-import com.training.parking.vehicle.Motorcycle;
-import com.training.parking.vehicle.Truck;
+import com.training.parking.branch2.vehicle.Car;
+import com.training.parking.branch2.vehicle.Motorcycle;
+import com.training.parking.branch2.vehicle.Truck;
 
 public class Main {
     public static void main(String[] args) {

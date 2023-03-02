@@ -1,11 +1,11 @@
-package com.training.parking;
+package com.training.parking.branch2;
 
-import com.training.parking.spot.CompactSpot;
-import com.training.parking.spot.LargeSpot;
-import com.training.parking.spot.SmallSpot;
-import com.training.parking.spot.Spot;
-import com.training.parking.vehicle.Vehicle;
-import com.training.parking.vehicle.VehicleType;
+import com.training.parking.branch2.spot.CompactSpot;
+import com.training.parking.branch2.spot.LargeSpot;
+import com.training.parking.branch2.spot.SmallSpot;
+import com.training.parking.branch2.spot.Spot;
+import com.training.parking.branch2.vehicle.Vehicle;
+import com.training.parking.branch2.vehicle.VehicleType;
 
 import java.util.HashMap;
 import java.util.LinkedList;

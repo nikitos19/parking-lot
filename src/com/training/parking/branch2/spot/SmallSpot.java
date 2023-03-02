@@ -1,7 +1,7 @@
-package com.training.parking.spot;
+package com.training.parking.branch2.spot;
 
-import com.training.parking.vehicle.Vehicle;
-import com.training.parking.vehicle.VehicleType;
+import com.training.parking.branch2.vehicle.Vehicle;
+import com.training.parking.branch2.vehicle.VehicleType;
 
 public class SmallSpot extends Spot {
 

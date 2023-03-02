@@ -1,6 +1,6 @@
-package com.training.parking.spot;
+package com.training.parking.branch2.spot;
 
-import com.training.parking.vehicle.Vehicle;
+import com.training.parking.branch2.vehicle.Vehicle;
 
 public class LargeSpot extends Spot {
 

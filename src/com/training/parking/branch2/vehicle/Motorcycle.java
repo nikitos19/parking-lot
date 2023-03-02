@@ -1,6 +1,6 @@
-package com.training.parking.vehicle;
+package com.training.parking.branch2.vehicle;
 
-import com.training.parking.spot.SpotType;
+import com.training.parking.branch2.spot.SpotType;
 
 public class Motorcycle extends Vehicle {
     @Override
