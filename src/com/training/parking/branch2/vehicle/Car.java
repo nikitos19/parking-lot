@@ -4,6 +4,10 @@ import com.training.parking.branch2.spot.SpotType;
 
 public class Car extends Vehicle {
 
+    public Car() {
+        super(1.0);
+    }
+
     @Override
     public VehicleType getVehicleType() {
         return VehicleType.CAR;

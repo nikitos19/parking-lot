@@ -5,6 +5,10 @@ import com.training.parking.branch2.vehicle.VehicleType;
 
 public class CompactSpot extends Spot {
 
+    public CompactSpot() {
+        super(7.5, 1.0);
+    }
+
     @Override
     public boolean canFitVehicle(Vehicle vehicle) {
         return VehicleType.MOTORCYCLE == vehicle.getVehicleType() ||
@@ -14,10 +18,5 @@ public class CompactSpot extends Spot {
     @Override
     public SpotType getSpotType() {
         return SpotType.COMPACT;
-    }
-
-    @Override
-    protected double getHourlyRate() {
-        return 2.0;
     }
 }

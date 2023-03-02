@@ -3,40 +3,53 @@ package com.training.parking.branch2.spot;
 import com.training.parking.branch2.vehicle.Vehicle;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Spot {
-    private LocalDateTime parkedTime;
-    private Vehicle vehicle;
+    private final Set<Vehicle> vehicles;
+    private final double hourRate;
+    private double capacity;
+
+    protected Spot(double hourRate, double size) {
+        this.hourRate = hourRate;
+        this.capacity = size;
+        this.vehicles = new HashSet<>();
+    }
 
     public void occupy(Vehicle vehicle) {
-        this.vehicle = vehicle;
-        this.parkedTime = LocalDateTime.now();
+        vehicles.add(vehicle);
+        vehicle.startParking();
+        capacity -= vehicle.getSize();
     }
 
-    public void freeUp() {
-        this.vehicle = null;
-        this.parkedTime = null;
+    public void freeUp(Vehicle vehicle) {
+        vehicles.remove(vehicle);
+        vehicle.endParking();
+        capacity += vehicle.getSize();
     }
 
-    public double charge() {
-        if (vehicle == null || parkedTime == null) {
-            return 0.0;
-        }
-
-        double hours = Duration.between(parkedTime, LocalDateTime.now()).toMinutes() / 60.0;
-        return hours * getHourlyRate();
+    public boolean canFitVehicle(Vehicle vehicle) {
+        return vehicle.getSize() <= capacity;
     }
 
-    public abstract boolean canFitVehicle(Vehicle vehicle);
+    public boolean isFull() {
+        return capacity == 0.0;
+    }
+
+    public double charge(Vehicle vehicle) {
+        return Duration.between(vehicle.getParkedTime(), vehicle.getEndParkingTime()).toMinutes() / 60.0 * hourRate;
+    }
 
     public abstract SpotType getSpotType();
 
-    protected abstract double getHourlyRate();
-
     // other methods
+
     @Override
     public String toString() {
-        return getSpotType().name().toLowerCase() + " spot";
+        return getSpotType().name().toLowerCase() + " spot{" +
+            "vehicles=" + vehicles +
+            ", capacity=" + capacity +
+            '}';
     }
 }

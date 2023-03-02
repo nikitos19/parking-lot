@@ -45,7 +45,9 @@ public class ParkingLot_PriorityQueue {
             if (availableSpot.canFitVehicle(vehicle)) {
                 availableSpot.occupy(vehicle);
                 takenSpots.put(vehicle, availableSpot);
-                spotIterator.remove();
+                if (availableSpot.isFull()) {
+                    spotIterator.remove();
+                }
                 return true;
             }
         }
@@ -57,7 +59,7 @@ public class ParkingLot_PriorityQueue {
         if (spot == null) {
             return false;
         }
-        spot.freeUp();
+        spot.freeUp(vehicle);
         availableSpots.add(spot);
         return true;
     }
@@ -66,7 +68,7 @@ public class ParkingLot_PriorityQueue {
     public String toString() {
         return "ParkingLot{\n" +
             "availableSpots = " + availableSpots +
-            "\ntakenSpots = " + takenSpots +
+            "\ntakenSpots = " + takenSpots.values().stream().distinct().toList() +
             "\n}";
     }
 }

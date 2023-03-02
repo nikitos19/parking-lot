@@ -4,6 +4,10 @@ import com.training.parking.branch2.vehicle.Vehicle;
 
 public class LargeSpot extends Spot {
 
+    public LargeSpot() {
+        super(10.0, 1.5);
+    }
+
     @Override
     public boolean canFitVehicle(Vehicle vehicle) {
         return true;
@@ -12,10 +16,5 @@ public class LargeSpot extends Spot {
     @Override
     public SpotType getSpotType() {
         return SpotType.LARGE;
-    }
-
-    @Override
-    protected double getHourlyRate() {
-        return 3.0;
     }
 }

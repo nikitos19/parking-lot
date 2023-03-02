@@ -8,24 +8,23 @@ import com.training.parking.branch2.spot.SpotType;
 import com.training.parking.branch2.vehicle.Vehicle;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
-import java.util.Queue;
+import java.util.Set;
 
 /**
  * The parking lot with Map of spot types to available spots
- * <p>
- * The time complexity should be O(k) where k - spot types number
  */
 public class ParkingLot_SpotTypeToSpots {
-    private final Map<SpotType, Queue<Spot>> spotTypeToSpots;
+    private final Map<SpotType, Set<Spot>> spotTypeToSpots;
     private final Map<Vehicle, Spot> takenSpots;
 
     public ParkingLot_SpotTypeToSpots(int numOfSmallSpots, int numOfCompactSpots, int numOfLargeSpots) {
         spotTypeToSpots = new HashMap<>();
-        spotTypeToSpots.put(SpotType.SMALL, new LinkedList<>());
-        spotTypeToSpots.put(SpotType.COMPACT, new LinkedList<>());
-        spotTypeToSpots.put(SpotType.LARGE, new LinkedList<>());
+        spotTypeToSpots.put(SpotType.SMALL, new HashSet<>());
+        spotTypeToSpots.put(SpotType.COMPACT, new HashSet<>());
+        spotTypeToSpots.put(SpotType.LARGE, new HashSet<>());
         takenSpots = new HashMap<>();
 
         for (int i = 0; i < numOfSmallSpots; i++) {
@@ -40,25 +39,35 @@ public class ParkingLot_SpotTypeToSpots {
     }
 
     public boolean park(Vehicle vehicle) {
-        Queue<Spot> availableSpots = spotTypeToSpots.get(vehicle.getSuitableSpotType());
-        if (!availableSpots.isEmpty()) {
-            return park(vehicle, availableSpots);
+        if (park(vehicle, spotTypeToSpots.get(vehicle.getSuitableSpotType()).iterator())) {
+            return true;
         }
-        for (Map.Entry<SpotType, Queue<Spot>> spotTypeToAvailableSpots : spotTypeToSpots.entrySet()) {
+
+        for (Map.Entry<SpotType, Set<Spot>> spotTypeToAvailableSpots : spotTypeToSpots.entrySet()) {
             if (spotTypeToAvailableSpots.getKey().ordinal() < vehicle.getSuitableSpotType().ordinal()
                 || spotTypeToAvailableSpots.getValue().isEmpty()) {
                 continue;
             }
-            return park(vehicle, spotTypeToAvailableSpots.getValue());
+            if (park(vehicle, spotTypeToAvailableSpots.getValue().iterator())) {
+                return true;
+            }
         }
         return false;
     }
 
-    private boolean park(Vehicle vehicle, Queue<Spot> availableSpots) {
-        Spot spot = availableSpots.poll();
-        spot.occupy(vehicle);
-        takenSpots.put(vehicle, spot);
-        return true;
+    private boolean park(Vehicle vehicle, Iterator<Spot> availableSpots) {
+        while (availableSpots.hasNext()) {
+            Spot spot = availableSpots.next();
+            if (spot.canFitVehicle(vehicle)) {
+                spot.occupy(vehicle);
+                if (spot.isFull()) {
+                    availableSpots.remove();
+                }
+                takenSpots.put(vehicle, spot);
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean unpark(Vehicle vehicle) {
@@ -66,7 +75,7 @@ public class ParkingLot_SpotTypeToSpots {
         if (spot == null) {
             return false;
         }
-        spot.freeUp();
+        spot.freeUp(vehicle);
         spotTypeToSpots.get(spot.getSpotType()).add(spot);
         return true;
     }
@@ -75,7 +84,7 @@ public class ParkingLot_SpotTypeToSpots {
     public String toString() {
         return "ParkingLot{\n" +
             "spot type to available spots: " + spotTypeToSpots +
-            "\ntakenSpots=" + takenSpots +
+            "\ntakenSpots=" + takenSpots.values().stream().distinct().toList() +
             "\n}";
     }
 }
